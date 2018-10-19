@@ -1,0 +1,75 @@
+package tag.util.jail;
+
+import java.io.*;
+import java.util.*;
+import java.text.*;
+import tag.net.tinyhttp.*;
+
+public class HttpParser implements MessageParser
+{
+	   ParsedResponseData parsedMessage;
+      DateFormat df = DateFormat.getDateTimeInstance( DateFormat.SHORT, 
+                                                      DateFormat.SHORT );
+	   
+	public void parseInput( InputStream input )
+	{
+		parsedMessage = new ParsedResponseData( input );
+   }
+	
+	public Vector buildCommand()
+	{
+		// apply Vector
+		Vector out = new Vector( 3 );
+		out.addElement( "apply" );
+		out.addElement( parsedMessage.getCommand()  );
+		
+		//  formal args Vector
+		{
+		   Vector in  = new Vector( 2 );
+		   in.addElement( parsedMessage.getResource() );
+		   in.addElement( parsedMessage.getArgs()     );
+		
+		   out.addElement( in );
+		}
+		
+		return out;
+	}	
+
+	public void write( OutputStream out, Object response )
+	{
+		String data         = response.toString();
+		String contentType  = Mime.getContentType( parsedMessage.getResource() );
+      String lastModified = df.format( new Date() );
+		
+      DataOutputStream dout = new DataOutputStream
+      (
+         new BufferedOutputStream
+         (
+            out
+         )
+      );
+      
+      if ( dout == null ) return;      
+ 
+      String msg = "HTTP/1.0 200 OK\r\n"
+           + "Date: Wed, 13 Jan 2002 15:39:29\r\n"
+           + "Server: Jail\r\n"
+           + "Last-Modified: "  + lastModified + "\r\n"
+           + "Content-Length: " + data.length() + "\r\n"
+           + "Content-Type: "   + contentType + "\r\n\r\n"
+           + data;
+                 
+      try
+      {
+         dout.writeBytes( msg );
+         dout.flush();
+         dout.close();		
+      }
+      catch( Exception e )
+      {
+      	e.printStackTrace();
+      }
+   }
+   
+
+}

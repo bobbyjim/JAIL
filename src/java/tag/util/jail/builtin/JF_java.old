@@ -1,0 +1,63 @@
+package webslinger.jail;
+
+import java.lang.reflect.*;
+import java.net.*;
+import java.util.*;
+import tag.util.*;
+import tag.util.jail.fw.*;
+import tag.util.jail.*;
+
+/************************************************************************
+*
+*   JF_java invokes a method on a Java class.
+*
+*   (java classname methodname (parms) (args))
+*
+************************************************************************/
+public class JF_java extends JailFunction implements Culpable, Cloneable
+{
+   boolean analyzeArguments() { return true; }
+   boolean evaluateArguments() { return true; }
+   
+   protected Culpable applyCommand()    
+   {
+      return new JailAtom( 0 );
+      /*
+      try
+      {
+         Class      javaClass  = Class.forName( this.getStringArg(1) );
+         String     methodName = this.getStringArg(2);
+         JailVector parms      = this.getVectorArg(3);
+         JailVector args       = this.getVectorArg(4);
+         
+         //
+         //  Re-create the parm types
+         //
+         Class[]    parmTypes  = new Class[ parms.size() ];
+         
+         for( int i=0; i<parmTypes.length; i++ )
+            parmTypes[i] = Class.forName( parms.elementAt(i).toString() );
+            
+         Method     javaMethod = javaClass.getMethod( methodName, parmTypes );
+         
+         //
+         //  Build the arguments to this method.
+         //
+         
+         
+         
+         //
+         //  Create the instance
+         //   
+         Object     instance = javaClass.newInstance();
+         
+         //
+         //  Invoke the method
+         //
+         Object out = javaMethod.invoke( instance, javaArgs );
+                  
+         return new JailAtom( out.toString() );            
+      }
+      */
+   }
+}

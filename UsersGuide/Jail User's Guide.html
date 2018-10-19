@@ -1,0 +1,245 @@
+<!DOCTYPE doctype PUBLIC "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+    
+  <meta http-equiv="Content-Type"
+ content="text/html; charset=iso-8859-1">
+    
+  <meta name="Author" content="Eaglestone, Robert [RICH6:B918:EXCH]">
+    
+  <meta name="GENERATOR"
+ content="Mozilla/4.76 [en] (Windows NT 5.0; U) [Netscape]">
+  <title>User's Guide</title>
+</head>
+  <body>
+ &nbsp;<img src="file:///C:/ipcauto/util/jail/UsersGuide/jail2.jpg"
+ alt="">
+ 
+<center>
+<table border="0" cellspacing="0" cellpadding="0" cols="1" width="600">
+ <tbody>
+    <tr>
+ <td><font size="+2">JailScript Guide - 2002.03.15</font> 
+      <p><b>JailScript</b> is a simple script language used for rapid development 
+of small customized components of an application.&nbsp; It opens up the internals
+of applications to the user's control at many levels.&nbsp; JailScript is
+interpreted, not compiled. </p>
+      <p>The Jail script is composed of data definitions, functions, and
+flow control statements. <br>
+&nbsp; <br>
+&nbsp;<b></b> </p>
+      <p><b>Jail is Case Sensitive</b><b></b> </p>
+      <p>All Jail values are case sensitive. <br>
+&nbsp; <br>
+      <b></b>&nbsp;<b></b> </p>
+      <p><b>CLI</b> </p>
+      <p>To enter CLI mode, execute Jail with no arguments.&nbsp; You should 
+see a prompt like this: </p>
+      <blockquote><tt>Command-Line Mode Ready.</tt> <br>
+        <tt>&gt;&nbsp;</tt></blockquote>
+ <font face="Arial,Helvetica"></font><b></b> 
+      <p><b>Hello, World</b><b></b> </p>
+      <p>To print "Hello, World", one creates a <b>list</b> beginning with
+the method name <tt>echo, </tt>which sends all of its arguments to stdout.&nbsp; 
+Please note that strings do not have to be in double quotes, but they will 
+be interpreted as variables if they have been defined earlier. </p>
+      <blockquote><tt>(echo "Hello, World\n")&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+# one string</tt> <br>
+        <tt>(echo Hello ", " World "\n")&nbsp;&nbsp; # four strings</tt></blockquote>
+ <b></b><b></b> 
+      <p><b>Data</b> </p>
+      <p><b>Data</b> can take the form of atomic variables, lists, and hashes.&nbsp;&nbsp; 
+      <b>Atoms </b>are strings, such as "Hello, World\n", or numbers, such
+as 3.14.&nbsp; <b>Lists</b> are extensible arrays, and are delimited by parentheses 
+or curly braces: for example, (a b 3) is a list containing two strings and
+one number.&nbsp; It can also be written with curly braces as {a b e}: both
+styles are fine.&nbsp; Lists can contain atoms, lists, and hashes, and are
+be indexed by integer position.&nbsp; A <b>Hash</b> is a list of key-value
+pairs, indexed by key.&nbsp; Keys are always Strings, while values may be
+atoms, lists, or hashes. </p>
+      <p>Atoms and lists are declared by a list beginning with the method
+name <tt>define</tt>. </p>
+      <p><i>Examples</i>: </p>
+      <blockquote><tt>(define foo "mystring")&nbsp;&nbsp;&nbsp;&nbsp; # foo
+is a scalar</tt> <br>
+        <tt>(define foo (1 2 a))&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+# foo is a list with 3 members</tt> <br>
+        <tt>(define foo (1 (a b) 2))&nbsp;&nbsp;&nbsp; # foo is a list with 
+3 members</tt> <br>
+        <tt>(echo foo[0])&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+# print the first element of foo</tt><tt></tt> 
+        <p><tt>(echo Hello ", World\n" )&nbsp;&nbsp; # prints "Hello, World\n"</tt> 
+        <br>
+        <tt>(define Hello Goodbye)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; # define
+a variable named Hello</tt> <br>
+        <tt>(echo Hello ", World\n" )&nbsp;&nbsp; # prints "Goodbye, World\n"!</tt> 
+        <br>
+        <tt>(undef Hello)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+# removes the variable</tt> <br>
+        <tt>(echo Hello ", World\n" )&nbsp;&nbsp; # prints "Hello, World\n"</tt></p>
+      </blockquote>
+ Hashes, however, must be declared using the method name <tt>Hash</tt>: 
+      <blockquote><tt>(define foo (Hash ((key1 value1) (key2 value2) (key3
+value3))))</tt></blockquote>
+ Once created, hashes may be indexed by key name: 
+      <blockquote><tt>(echo foo[key2])</tt></blockquote>
+ For the sake of symmetry, atoms and lists can be created using the methods 
+      <tt>Atom</tt> and <tt>List</tt>: 
+      <blockquote><tt>(define foo (Atom "mystring"))</tt> <br>
+        <tt>(define foo (List (a b c)))</tt></blockquote>
+ <tt></tt><tt></tt> 
+      <p><b>Flow Control</b> </p>
+      <p>Flow control consists of a foreach() statement and an if() statement: 
+      <br>
+&nbsp; </p>
+      <blockquote><tt>(foreach element list (body))</tt> <br>
+        <tt>Example:</tt> <br>
+        <tt>(foreach element (a b c)&nbsp;</tt> <br>
+        <tt>(&nbsp;</tt> <br>
+        <tt>&nbsp;&nbsp; (echo element)&nbsp;</tt> <br>
+        <tt>))</tt><tt></tt> 
+        <p><tt>(if (test-expression) (true-expression) (false-expression))</tt> 
+        <br>
+        <tt>Example:</tt> <br>
+        <tt>(if (equals a b)</tt> <br>
+        <tt>&nbsp;&nbsp;&nbsp; (echo "a equals b")</tt> <br>
+        <tt>&nbsp;&nbsp;&nbsp; (echo "a != b")</tt> <br>
+        <tt>)</tt></p>
+      </blockquote>
+  
+      <p><b>Functions</b> </p>
+      <p>The following table enumerates the functions currently in Jail: <br>
+&nbsp; </p>
+      <center>
+      <table border="1" cellspacing="0" cellpadding="8" cols="2"
+ width="90%">
+ <tbody>
+          <tr>
+ <td>(add arg...)</td>
+  <td>Returns sum of all args.</td>
+ </tr>
+  <tr>
+ <td>(Atom value)</td>
+  <td>Returns a new atom.</td>
+ </tr>
+  <tr>
+ <td>(cat arg...)</td>
+  <td>Catenates args into a new atom.</td>
+ </tr>
+  <tr>
+ <td>(cli)</td>
+  <td>Starts CLI mode</td>
+ </tr>
+  <tr>
+ <td>(define name value)</td>
+  <td>Defines a new variable.</td>
+ </tr>
+  <tr>
+ <td>(dialog arg...)</td>
+  <td>Pops up a JDialog with the args as the message.</td>
+ </tr>
+  <tr>
+ <td>(dialogin arg...)</td>
+  <td>Pops up a JDialog with the args as the message and a textfield for user
+input.&nbsp; The user input is returned.</td>
+ </tr>
+  <tr>
+ <td>(div num d1 d2...)</td>
+  <td>Divides num by the remaining args.</td>
+ </tr>
+  <tr>
+ <td>(echo arg...)</td>
+  <td>Prints args to STDOUT.</td>
+ </tr>
+  <tr>
+ <td>(equals a b...)</td>
+  <td>Returns "1" if the args are equal; "0" otherwise.</td>
+ </tr>
+  <tr>
+ <td>(eval arg...)</td>
+  <td>Evaluates args; <br>
+Returns results in a list.</td>
+ </tr>
+  <tr>
+ <td>(exit)</td>
+  <td>Quits Jail</td>
+ </tr>
+  <tr>
+ <td>(foreach element (list) (body))</td>
+  <td>Loops body over list.</td>
+ </tr>
+  <tr>
+ <td>(Hash ((k1 v1) (k2 v2)...))</td>
+  <td>Returns a hash.</td>
+ </tr>
+  <tr>
+ <td>(if (test) (true-expr) (false-expr))</td>
+  <td>If-then-else construct.</td>
+ </tr>
+  <tr>
+ <td>(join delimiter arg...)</td>
+  <td>Catenates args into a new atom.&nbsp; Args are delimited by the given 
+delimiter.</td>
+ </tr>
+  <tr>
+ <td>(len arg)</td>
+  <td>Returns the length of the atom, or size of the list.</td>
+ </tr>
+  <tr>
+ <td>(List (args...))</td>
+  <td>Returns a list from the given list.</td>
+ </tr>
+  <tr>
+ <td>(match pattern string)</td>
+  <td>Returns pattern if detected in string, or the empty string otherwise.</td>
+ </tr>
+  <tr>
+ <td>(mul a b...)</td>
+  <td>Multiplies numbers together.</td>
+ </tr>
+  <tr>
+ <td>(pwd)</td>
+  <td>Returns the user directory name.</td>
+ </tr>
+  <tr>
+ <td>(SerialId)</td>
+  <td>Returns a unique ID.</td>
+ </tr>
+  <tr>
+ <td>(split delimiter string)</td>
+  <td>Tokenizes a string into a list, based on the delimiter.</td>
+ </tr>
+  <tr>
+ <td>(sub num arg...)</td>
+  <td>Subtracts args from the first arg.</td>
+ </tr>
+  <tr>
+ <td>(tcpSend host port arg...)</td>
+  <td>Sends args to the given host:port over a socket, and returns the response 
+string.</td>
+ </tr>
+  <tr>
+ <td>(undef id)</td>
+  <td>Removes a variable from the namespace.</td>
+ </tr>
+  <tr>
+ <td><br>
+            </td>
+  <td><br>
+            </td>
+ </tr>
+ 
+        </tbody>
+      </table>
+      </center>
+  
+      <blockquote><tt></tt>&nbsp;</blockquote>
+ </td>
+ </tr>
+ 
+  </tbody>
+</table>
+</center>
+  <br>
+</body>
+</html>

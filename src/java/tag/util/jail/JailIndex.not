@@ -1,0 +1,90 @@
+package tag.util.jail;
+
+import java.io.*;
+import java.util.*;
+import tag.util.jail.fw.*;
+import tag.util.*;
+
+/************************************************************
+
+   A JailIndex represents access into two types of data:
+   
+      (1) a JailVector
+      (2) a JailHash
+
+   In both cases, the parameters are treated as indices or 
+   keys into the named object.  For example:
+   
+   [mylist 5 3 1]
+   
+   Evaluates to a JailVector containing the elements at
+   positions 5, 3, and 1 of mylist.  Likewise:
+   
+   [myhash a c b]
+   
+   Evaluates to a JailVector containing the elements at 
+   keys 'a', 'c', and 'b'.
+   
+************************************************************/
+public class JailIndex extends Vector implements Culpable, Cloneable
+{
+   public JailIndex()
+   {
+      super();
+   }
+   
+   public JailIndex( JailAtom a )
+   {
+      super(a);
+   }
+   
+   public JailIndex( JailVector a )
+   {
+      super(a);
+   }
+   
+   public JailIndex( Enumeration e )
+   {
+      super(e);
+   }
+   
+   
+	public Object clone()
+	{
+		return super.clone();
+	}
+	
+	public Culpable eval()
+	{	   
+	   Culpable obj = (Culpable) Librarian.getInstance().get( firstElement().toString() );
+  
+      if ( obj != null )
+      {
+         if ( obj instanceof JailFunction )
+         {
+            //
+            //  I am a registered function.
+            //
+            JailFunction func = (JailFunction) ((JailVector)obj).clone();
+            func.addMembers( this );
+            return func.eval();
+         }
+         else 
+         {
+            //
+            //  I am nothing special.  Simply evaluate my members.
+            //
+            JailVector out = new JailVector();
+            
+            for( int i=0; i<size(); i++ )
+            {
+               out.addElement( ((Culpable) elementAt(i)).eval() );
+            }
+            
+            return out;
+         }
+      }
+		else
+   		return this;
+	}
+}
